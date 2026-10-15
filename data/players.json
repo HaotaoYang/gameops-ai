@@ -1,0 +1,38 @@
+
+[
+  {
+    "player_id": 1001,
+    "name": "Alice",
+    "server_id": 3,
+    "level": 50,
+    "last_login": "2026-10-13"
+  },
+  {
+    "player_id": 1002,
+    "name": "Bob",
+    "server_id": 3,
+    "level": 42,
+    "last_login": "2026-10-14"
+  },
+  {
+    "player_id": 1003,
+    "name": "Charlie",
+    "server_id": 5,
+    "level": 36,
+    "last_login": "2026-10-12"
+  },
+  {
+    "player_id": 1004,
+    "name": "David",
+    "server_id": 3,
+    "level": 60,
+    "last_login": "2026-10-14"
+  },
+  {
+    "player_id": 1005,
+    "name": "Eva",
+    "server_id": 5,
+    "level": 28,
+    "last_login": "2026-10-11"
+  }
+]
