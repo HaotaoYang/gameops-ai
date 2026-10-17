@@ -31,11 +31,28 @@
     python3.12 -m venv .venv
     source .venv/bin/activate
 
-运行程序：
+## 自动化测试
 
-    python hello.py
+安装测试依赖：
+
+    python -m pip install -r requirements-dev.txt
+
+运行所有测试：
+
+    python -m pytest -q tests/
+
+运行 Day 5 的旧验收：
+
+    python check_day5.py
+
+当前自动化测试数量：21
 
 ## 学习进度
 
-- [x] Day 1：创建 Python 项目环境
-- [ ] Day 2：Python 数据结构
+- [x] Day 1：Python 环境与 Git
+- [x] Day 2：Python 数据结构
+- [x] Day 3：函数与类型标注
+- [x] Day 4：JSON、日期与异常处理
+- [x] Day 5：模块化与数据类
+- [x] Day 6：pytest 自动化测试
+- [ ] Day 7：第一周代码复习与整理
