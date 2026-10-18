@@ -1,4 +1,6 @@
-from fastapi import FastAPI
+from typing import Annotated
+from fastapi import FastAPI, Path
+from services import get_players
 
 app = FastAPI(
     title="GameOps AI",
@@ -10,3 +12,10 @@ app = FastAPI(
 def health() -> dict[str, str]:
     """Health check endpoint."""
     return {"status": "ok"}
+
+@app.get("/servers/{server_id}/players")
+def list_players(
+    server_id: Annotated[int, Path(ge=1)]
+) -> list[dict[str, int | str]]:
+    """List players for a given server."""
+    return get_players(server_id)

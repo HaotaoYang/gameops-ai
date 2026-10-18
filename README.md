@@ -156,7 +156,8 @@ services.py 中的主要函数：
 - [x] Day 6：pytest 自动化测试
 - [x] Day 7：第一周复习与整理
 - [x] Day 8：FastAPI 健康检查
-- [ ] Day 9：路径参数和玩家查询接口
+- [x] Day 9：路径参数与玩家查询 API
+- [ ] Day 10：Pydantic 数据模型
 
 ## 11. 未来目标
 
@@ -186,3 +187,30 @@ services.py 中的主要函数：
     python -m pytest -q tests/
 
 Day 8 预期测试结果：25 passed
+
+## 玩家查询 API
+
+启动服务：
+
+    python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+
+查询 3 服玩家：
+
+    GET http://127.0.0.1:8000/servers/3/players
+
+查询 5 服玩家：
+
+    GET http://127.0.0.1:8000/servers/5/players
+
+接口规则：
+
+- server_id 必须是大于等于 1 的整数
+- 正常请求返回 JSON 玩家数组
+- 当前约定：无玩家返回 []
+- 参数校验失败返回 HTTP 422
+
+运行全部测试：
+
+    python -m pytest -q tests/
+
+Day 9 预期：31 passed
