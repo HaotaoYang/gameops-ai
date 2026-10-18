@@ -156,8 +156,9 @@ services.py 中的主要函数：
 - [x] Day 6：pytest 自动化测试
 - [x] Day 7：第一周复习与整理
 - [x] Day 8：FastAPI 健康检查
-- [x] Day 9：路径参数与玩家查询 API
-- [ ] Day 10：Pydantic 数据模型
+- [x] Day 9：FastAPI 玩家查询 API
+- [x] Day 10：Pydantic 玩家响应模型
+- [ ] Day 11：FastAPI 查询参数与业务筛选
 
 ## 11. 未来目标
 
@@ -214,3 +215,31 @@ Day 8 预期测试结果：25 passed
     python -m pytest -q tests/
 
 Day 9 预期：31 passed
+
+## Day 10：Pydantic 响应模型
+
+玩家查询 API：
+
+    GET /servers/{server_id}/players
+
+使用 PlayerResponse 模型定义响应字段：
+
+- player_id：正整数
+- name：非空字符串
+- server_id：大于等于 1 的整数
+- level：非负整数
+- last_login：日期
+
+模型位于 app/schemas.py。
+
+原有服务函数与响应 JSON 字段保持不变。
+
+查看 OpenAPI 文档：
+
+    http://127.0.0.1:8000/docs
+
+运行完整测试：
+
+    python -m pytest -q tests/
+
+预期结果：39 passed

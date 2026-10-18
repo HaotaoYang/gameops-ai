@@ -111,3 +111,41 @@ def test_player_response_fields():
 
     assert isinstance(first["player_id"], int)
     assert isinstance(first["name"], str)
+
+
+def test_player_response_model_structure():
+    response = client.get("/servers/3/players")
+
+    assert response.status_code == 200
+
+    first = response.json()[0]
+
+    assert set(first.keys()) == {
+        "player_id",
+        "name",
+        "server_id",
+        "level",
+        "last_login",
+    }
+
+    assert first["last_login"] == "2026-10-13"
+
+
+def test_openapi_player_schema():
+    response = client.get("/openapi.json")
+
+    assert response.status_code == 200
+
+    document = response.json()
+
+    schemas = document["components"]["schemas"]
+
+    assert "PlayerResponse" in schemas
+
+    player_schema = schemas["PlayerResponse"]
+
+    properties = player_schema["properties"]
+
+    assert properties["player_id"]["type"] == "integer"
+    assert properties["name"]["type"] == "string"
+    assert properties["last_login"]["format"] == "date"
