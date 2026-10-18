@@ -154,10 +154,35 @@ services.py 中的主要函数：
 - [x] Day 4：JSON、日期和异常处理
 - [x] Day 5：模块化和数据类
 - [x] Day 6：pytest 自动化测试
-- [x] Day 7：第一周复习与工程整理
-- [ ] Day 8：FastAPI 与健康检查接口
+- [x] Day 7：第一周复习与整理
+- [x] Day 8：FastAPI 健康检查
+- [ ] Day 9：路径参数和玩家查询接口
 
 ## 11. 未来目标
 
 实现支持模型调用、知识检索、业务工具调用、
 任务状态管理及运营分析的 AI 应用后端服务。
+
+## FastAPI
+
+启动 Web 服务：
+
+    python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+
+健康检查接口：
+
+    GET http://127.0.0.1:8000/health
+
+响应：
+
+    {"status": "ok"}
+
+自动生成的 API 文档：
+
+    http://127.0.0.1:8000/docs
+
+运行自动化测试：
+
+    python -m pytest -q tests/
+
+Day 8 预期测试结果：25 passed
