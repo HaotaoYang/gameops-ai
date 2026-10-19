@@ -149,3 +149,115 @@ def test_openapi_player_schema():
     assert properties["player_id"]["type"] == "integer"
     assert properties["name"]["type"] == "string"
     assert properties["last_login"]["format"] == "date"
+
+def test_players_without_min_level():
+    """Existing API behavior must stay unchanged."""
+    response = client.get("/servers/3/players")
+
+    assert response.status_code == 200
+
+    players = response.json()
+
+    assert [p["player_id"] for p in players] == [
+        1001, 1002, 1004
+    ]
+
+
+def test_players_min_level_50():
+    """The boundary level 50 must be included."""
+    response = client.get(
+        "/servers/3/players",
+        params={"min_level": 50},
+    )
+
+    assert response.status_code == 200
+
+    players = response.json()
+
+    assert [p["name"] for p in players] == [
+        "Alice", "David"
+    ]
+
+
+def test_players_min_level_60():
+    """Only David meets the minimum level 60."""
+    response = client.get(
+        "/servers/3/players",
+        params={"min_level": 60},
+    )
+
+    assert response.status_code == 200
+
+    players = response.json()
+
+    assert [p["name"] for p in players] == ["David"]
+
+
+def test_players_min_level_61():
+    """A valid filter with no matches returns an empty list."""
+    response = client.get(
+        "/servers/3/players",
+        params={"min_level": 61},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == []
+
+
+def test_players_min_level_zero():
+    """Zero is a valid explicit minimum level."""
+    response = client.get(
+        "/servers/3/players",
+        params={"min_level": 0},
+    )
+
+    assert response.status_code == 200
+    assert len(response.json()) == 3
+
+
+def test_players_negative_min_level():
+    """Negative minimum levels must be rejected."""
+    response = client.get(
+        "/servers/3/players",
+        params={"min_level": -1},
+    )
+
+    assert response.status_code == 422
+
+
+def test_players_invalid_min_level():
+    """A non-integer minimum level must be rejected."""
+    response = client.get(
+        "/servers/3/players",
+        params={"min_level": "abc"},
+    )
+
+    assert response.status_code == 422
+
+
+def test_openapi_min_level_query_parameter():
+    """OpenAPI must document min_level as a query parameter."""
+    response = client.get("/openapi.json")
+
+    assert response.status_code == 200
+
+    document = response.json()
+
+    operation = document["paths"][
+        "/servers/{server_id}/players"
+    ]["get"]
+
+    parameters = operation["parameters"]
+
+    min_level_params = [
+        param
+        for param in parameters
+        if param["name"] == "min_level"
+    ]
+
+    assert len(min_level_params) == 1
+
+    param = min_level_params[0]
+
+    assert param["in"] == "query"
+    assert param["required"] is False

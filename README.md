@@ -158,7 +158,8 @@ services.py 中的主要函数：
 - [x] Day 8：FastAPI 健康检查
 - [x] Day 9：FastAPI 玩家查询 API
 - [x] Day 10：Pydantic 玩家响应模型
-- [ ] Day 11：FastAPI 查询参数与业务筛选
+- [x] Day 11：FastAPI 查询参数与玩家等级筛选
+- [ ] Day 12：继续完善游戏后端 API
 
 ## 11. 未来目标
 
@@ -243,3 +244,45 @@ Day 9 预期：31 passed
     python -m pytest -q tests/
 
 预期结果：39 passed
+
+
+## Day 11：玩家等级筛选
+
+### 接口
+
+GET /servers/{server_id}/players
+
+### 可选查询参数
+
+min_level：最低玩家等级。
+
+要求：
+- 必须是整数
+- 必须 >= 0
+- 不提供时，不执行等级筛选
+
+### 示例
+
+GET /servers/3/players?min_level=50
+
+返回 Alice 和 David。
+
+GET /servers/3/players?min_level=60
+
+只返回 David。
+
+GET /servers/3/players?min_level=61
+
+返回空数组 []。
+
+### 错误处理
+
+min_level=-1：HTTP 422
+
+min_level=abc：HTTP 422
+
+### 自动化测试
+
+python -m pytest -q tests/
+
+Day 11 预期：47 passed

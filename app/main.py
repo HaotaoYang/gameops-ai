@@ -2,10 +2,10 @@
 from datetime import date
 from typing import Annotated
 
-from fastapi import FastAPI, Path
+from fastapi import FastAPI, Path, Query
 
 from app.schemas import PlayerResponse
-from services import get_players
+from services import get_high_level_players, get_players
 
 
 app = FastAPI(
@@ -26,20 +26,30 @@ def health() -> dict[str, str]:
     response_model=list[PlayerResponse],
 )
 def list_players(
-    server_id: Annotated[int, Path(ge=1)]
+    server_id: Annotated[int, Path(ge=1)],
+    min_level: Annotated[
+        int | None,
+        Query(ge=0, description="Minimum player level"),
+    ] = None,
 ) -> list[PlayerResponse]:
-    """Return validated player response models."""
+    """Return players with an optional minimum level."""
 
-    raw_players = get_players(server_id)
+    if min_level is None:
+        raw_players = get_players(server_id)
+    else:
+        raw_players = get_high_level_players(
+            server_id,
+            min_level,
+        )
 
-    result = []
+    result: list[PlayerResponse] = []
 
     for player in raw_players:
         player_data = {
             **player,
             "last_login": date.fromisoformat(
                 player["last_login"]
-            )
+            ),
         }
 
         validated_player = PlayerResponse.model_validate(
