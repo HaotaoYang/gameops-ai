@@ -156,12 +156,13 @@ services.py 中的主要函数：
 - [x] Day 6：pytest 自动化测试
 - [x] Day 7：第一周复习与整理
 - [x] Day 8：FastAPI 健康检查
-- [x] Day 9：FastAPI 玩家查询 API
-- [x] Day 10：Pydantic 玩家响应模型
-- [x] Day 11：最低等级查询参数
-- [x] Day 12：多条件查询与日期筛选
-- [x] Day 13：分页查询与参数组合
-- [ ] Day 14：第二周 FastAPI 阶段复习与验收
+- [x] Day 9：路径参数与玩家查询
+- [x] Day 10：Pydantic 响应模型
+- [x] Day 11：等级查询参数
+- [x] Day 12：日期与组合筛选
+- [x] Day 13：分页
+- [x] Day 14：第二周复习与阶段验收
+- [ ] Day 15：大模型 API 基础
 
 ## 11. 未来目标
 
@@ -377,3 +378,64 @@ GET /servers/3/players?min_level=50&limit=1&offset=1
 python -m pytest -q tests/
 
 Day 13 预期：67 passed
+
+## Day 14：FastAPI 第二周阶段验收
+
+### 已实现接口
+
+1. GET /health
+2. GET /servers/{server_id}/players
+
+### 玩家查询参数
+
+- server_id：必填整数，必须 >= 1
+- min_level：可选整数，必须 >= 0
+- login_date：可选日期，YYYY-MM-DD
+- limit：可选整数，范围 1～100
+- offset：非负整数，默认 0
+
+### 查询规则
+
+1. 根据服务器选择玩家
+2. 根据等级与日期条件筛选
+3. 先筛选，再分页
+4. 使用 PlayerResponse 验证响应
+5. 转换为 JSON 返回客户端
+
+无结果时返回 HTTP 200 和空数组 []。
+
+非法参数返回 HTTP 422。
+
+### 启动服务
+
+python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+
+### 接口文档
+
+http://127.0.0.1:8000/docs
+
+### 自动化测试
+
+完整回归：
+
+python -m pytest -q tests/
+
+第二周阶段验收：
+
+python -m pytest -q tests/test_week2_review.py
+
+Day 14 预期测试结果：
+
+75 passed
+
+### 当前工程限制
+
+- 使用模拟 JSON 数据
+- 使用同步业务查询
+- 使用内存分页
+- 尚未实现鉴权、持久化数据库与生产监控
+- 尚未接入大模型
+
+### 下一阶段
+
+Day 15 开始学习大模型 API 调用。
