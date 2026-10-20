@@ -32,34 +32,51 @@ def list_players(
     server_id: Annotated[int, Path(ge=1)],
     min_level: Annotated[
         int | None,
-        Query(ge=0, description="Minimum player level"),
+        Query(
+            ge=0,
+            description="Minimum player level",
+        ),
     ] = None,
     login_date: Annotated[
         date | None,
-        Query(description="Exact last login date"),
+        Query(
+            description="Exact last login date",
+        ),
     ] = None,
+    limit: Annotated[
+        int | None,
+        Query(
+            ge=1,
+            le=100,
+            description="Maximum number of players",
+        ),
+    ] = None,
+    offset: Annotated[
+        int,
+        Query(
+            ge=0,
+            description="Number of players to skip",
+        ),
+    ] = 0,
 ) -> list[PlayerResponse]:
-    """Query players by server, minimum level, and last login date."""
+    """Filter players and apply optional pagination."""
 
-    # Case 1: no filters
+    # Step 1: apply existing filters
     if min_level is None and login_date is None:
         raw_players = get_players(server_id)
 
-    # Case 2: minimum level only
     elif login_date is None:
         raw_players = get_high_level_players(
             server_id,
             min_level,
         )
 
-    # Case 3 and 4: login date is provided
     else:
         raw_players = get_active_players(
             server_id,
             login_date.isoformat(),
         )
 
-        # Case 4: both date and level filters
         if min_level is not None:
             raw_players = [
                 player
@@ -67,10 +84,18 @@ def list_players(
                 if player["level"] >= min_level
             ]
 
-    # Keep Day 10's strict Pydantic response validation
+    # Step 2: paginate AFTER filtering
+    if limit is None:
+        paged_players = raw_players[offset:]
+    else:
+        paged_players = raw_players[
+            offset:offset + limit
+        ]
+
+    # Step 3: keep strict Pydantic validation
     result: list[PlayerResponse] = []
 
-    for player in raw_players:
+    for player in paged_players:
         player_data = {
             **player,
             "last_login": date.fromisoformat(

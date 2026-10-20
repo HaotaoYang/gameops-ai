@@ -410,3 +410,140 @@ def test_openapi_login_date_query_parameter():
 
     assert param["in"] == "query"
     assert param["required"] is False
+
+def test_players_limit_two():
+    """Limit the result to two players."""
+    response = client.get(
+        "/servers/3/players",
+        params={"limit": 2},
+    )
+
+    assert response.status_code == 200
+
+    assert [
+        p["name"] for p in response.json()
+    ] == ["Alice", "Bob"]
+
+
+def test_players_offset_one():
+    """Skip the first player without a limit."""
+    response = client.get(
+        "/servers/3/players",
+        params={"offset": 1},
+    )
+
+    assert response.status_code == 200
+
+    assert [
+        p["name"] for p in response.json()
+    ] == ["Bob", "David"]
+
+
+def test_players_limit_and_offset():
+    """Limit and offset should work together."""
+    response = client.get(
+        "/servers/3/players",
+        params={"limit": 2, "offset": 1},
+    )
+
+    assert response.status_code == 200
+
+    assert [
+        p["name"] for p in response.json()
+    ] == ["Bob", "David"]
+
+
+def test_players_offset_beyond_result():
+    """An offset beyond the result returns an empty list."""
+    response = client.get(
+        "/servers/3/players",
+        params={"offset": 100},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == []
+
+
+def test_players_level_filter_then_pagination():
+    """Filtering must happen before pagination."""
+    response = client.get(
+        "/servers/3/players",
+        params={
+            "min_level": 50,
+            "limit": 1,
+            "offset": 1,
+        },
+    )
+
+    assert response.status_code == 200
+
+    assert [
+        p["name"] for p in response.json()
+    ] == ["David"]
+
+
+def test_players_date_filter_then_pagination():
+    """Date filtering must happen before pagination."""
+    response = client.get(
+        "/servers/3/players",
+        params={
+            "login_date": "2026-10-14",
+            "limit": 1,
+            "offset": 1,
+        },
+    )
+
+    assert response.status_code == 200
+
+    assert [
+        p["name"] for p in response.json()
+    ] == ["David"]
+
+
+def test_players_all_filters_and_pagination():
+    """Both filters and pagination work together."""
+    response = client.get(
+        "/servers/3/players",
+        params={
+            "min_level": 40,
+            "login_date": "2026-10-14",
+            "limit": 1,
+            "offset": 1,
+        },
+    )
+
+    assert response.status_code == 200
+
+    assert [
+        p["name"] for p in response.json()
+    ] == ["David"]
+
+
+def test_players_invalid_limit_zero():
+    """Limit must be at least one."""
+    response = client.get(
+        "/servers/3/players",
+        params={"limit": 0},
+    )
+
+    assert response.status_code == 422
+
+
+def test_players_invalid_limit_too_large():
+    """Limit must not exceed one hundred."""
+    response = client.get(
+        "/servers/3/players",
+        params={"limit": 101},
+    )
+
+    assert response.status_code == 422
+
+
+def test_players_invalid_negative_offset():
+    """Offset cannot be negative."""
+    response = client.get(
+        "/servers/3/players",
+        params={"offset": -1},
+    )
+
+    assert response.status_code == 422

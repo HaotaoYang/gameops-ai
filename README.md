@@ -160,7 +160,8 @@ services.py 中的主要函数：
 - [x] Day 10：Pydantic 玩家响应模型
 - [x] Day 11：最低等级查询参数
 - [x] Day 12：多条件查询与日期筛选
-- [ ] Day 13：待开始
+- [x] Day 13：分页查询与参数组合
+- [ ] Day 14：第二周 FastAPI 阶段复习与验收
 
 ## 11. 未来目标
 
@@ -330,3 +331,49 @@ GET /servers/3/players?min_level=50&login_date=2026-10-14
 python -m pytest -q tests/
 
 Day 12 预期：57 passed
+
+## Day 13：玩家查询分页
+
+接口：
+
+GET /servers/{server_id}/players
+
+支持可选参数：
+
+- min_level：最低玩家等级，必须 >= 0
+- login_date：最后登录日期
+- limit：最多返回多少条，范围 1～100
+- offset：跳过多少条，必须 >= 0，默认 0
+
+分页规则：
+
+1. 先根据服务器、等级和日期筛选
+2. 再根据 offset 和 limit 截取结果
+3. 最后使用 PlayerResponse 验证并序列化
+
+示例：
+
+GET /servers/3/players?limit=2
+
+返回 Alice、Bob。
+
+GET /servers/3/players?limit=2&offset=1
+
+返回 Bob、David。
+
+GET /servers/3/players?min_level=50&limit=1&offset=1
+
+返回 David。
+
+兼容性：
+
+- 不提供 limit 时，不限制结果数量
+- 不提供 offset 时，默认从第一条开始
+- 筛选后无结果返回 200 和 []
+- 非法分页参数返回 HTTP 422
+
+测试：
+
+python -m pytest -q tests/
+
+Day 13 预期：67 passed
