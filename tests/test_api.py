@@ -261,3 +261,152 @@ def test_openapi_min_level_query_parameter():
 
     assert param["in"] == "query"
     assert param["required"] is False
+
+def test_players_login_date_only():
+    """Exact last login date should return Bob and David."""
+    response = client.get(
+        "/servers/3/players",
+        params={"login_date": "2026-10-14"},
+    )
+
+    assert response.status_code == 200
+
+    players = response.json()
+
+    assert [p["name"] for p in players] == [
+        "Bob", "David"
+    ]
+
+
+def test_players_login_date_other_day():
+    """October 13 should return Alice."""
+    response = client.get(
+        "/servers/3/players",
+        params={"login_date": "2026-10-13"},
+    )
+
+    assert response.status_code == 200
+
+    assert [
+        p["name"] for p in response.json()
+    ] == ["Alice"]
+
+
+def test_players_combined_filters():
+    """Date and minimum level must both match."""
+    response = client.get(
+        "/servers/3/players",
+        params={
+            "min_level": 50,
+            "login_date": "2026-10-14",
+        },
+    )
+
+    assert response.status_code == 200
+
+    assert [
+        p["name"] for p in response.json()
+    ] == ["David"]
+
+
+def test_players_combined_filters_no_match():
+    """Valid combined filters can return an empty list."""
+    response = client.get(
+        "/servers/3/players",
+        params={
+            "min_level": 61,
+            "login_date": "2026-10-14",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.json() == []
+
+
+def test_players_invalid_login_date():
+    """Invalid date text must return 422."""
+    response = client.get(
+        "/servers/3/players",
+        params={"login_date": "abc"},
+    )
+
+    assert response.status_code == 422
+
+
+def test_players_nonexistent_calendar_date():
+    """An impossible calendar date must be rejected."""
+    response = client.get(
+        "/servers/3/players",
+        params={"login_date": "2026-02-30"},
+    )
+
+    assert response.status_code == 422
+
+
+def test_players_date_filter_server_isolation():
+    """Date filtering must not include other servers."""
+    response = client.get(
+        "/servers/5/players",
+        params={"login_date": "2026-10-14"},
+    )
+
+    assert response.status_code == 200
+    assert response.json() == []
+
+
+def test_players_combined_filter_with_zero_level():
+    """Zero remains a valid explicitly provided level."""
+    response = client.get(
+        "/servers/3/players",
+        params={
+            "min_level": 0,
+            "login_date": "2026-10-14",
+        },
+    )
+
+    assert response.status_code == 200
+
+    assert [
+        p["name"] for p in response.json()
+    ] == ["Bob", "David"]
+
+
+def test_players_combined_invalid_level():
+    """An invalid level must still be rejected with a date."""
+    response = client.get(
+        "/servers/3/players",
+        params={
+            "min_level": -1,
+            "login_date": "2026-10-14",
+        },
+    )
+
+    assert response.status_code == 422
+
+
+def test_openapi_login_date_query_parameter():
+    """OpenAPI must document login_date as optional query."""
+    response = client.get("/openapi.json")
+
+    assert response.status_code == 200
+
+    document = response.json()
+
+    operation = document["paths"][
+        "/servers/{server_id}/players"
+    ]["get"]
+
+    parameters = operation["parameters"]
+
+    matches = [
+        param
+        for param in parameters
+        if param["name"] == "login_date"
+    ]
+
+    assert len(matches) == 1
+
+    param = matches[0]
+
+    assert param["in"] == "query"
+    assert param["required"] is False

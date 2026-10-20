@@ -158,8 +158,9 @@ services.py 中的主要函数：
 - [x] Day 8：FastAPI 健康检查
 - [x] Day 9：FastAPI 玩家查询 API
 - [x] Day 10：Pydantic 玩家响应模型
-- [x] Day 11：FastAPI 查询参数与玩家等级筛选
-- [ ] Day 12：继续完善游戏后端 API
+- [x] Day 11：最低等级查询参数
+- [x] Day 12：多条件查询与日期筛选
+- [ ] Day 13：待开始
 
 ## 11. 未来目标
 
@@ -286,3 +287,46 @@ min_level=abc：HTTP 422
 python -m pytest -q tests/
 
 Day 11 预期：47 passed
+
+## Day 12：多条件玩家查询
+
+现有玩家 API：
+
+GET /servers/{server_id}/players
+
+支持的可选查询参数：
+
+- min_level：最低玩家等级，非负整数
+- login_date：最后登录日期，使用 YYYY-MM-DD 格式
+
+示例：
+
+GET /servers/3/players
+
+返回 Alice、Bob、David。
+
+GET /servers/3/players?min_level=50
+
+返回 Alice、David。
+
+GET /servers/3/players?login_date=2026-10-14
+
+返回 Bob、David。
+
+GET /servers/3/players?min_level=50&login_date=2026-10-14
+
+只返回 David。
+
+说明：
+
+- 两个条件同时提供时使用 AND 逻辑
+- 条件合法但无结果时返回 HTTP 200 和 []
+- 参数格式错误时返回 HTTP 422
+- login_date 表示最后登录日期匹配，不等于历史 DAU
+- 响应继续使用 PlayerResponse Pydantic 模型
+
+测试命令：
+
+python -m pytest -q tests/
+
+Day 12 预期：57 passed
