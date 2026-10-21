@@ -161,8 +161,9 @@ services.py 中的主要函数：
 - [x] Day 11：等级查询参数
 - [x] Day 12：日期与组合筛选
 - [x] Day 13：分页
-- [x] Day 14：第二周复习与阶段验收
-- [ ] Day 15：大模型 API 基础
+- [x] Day 14：第二周 FastAPI 阶段验收
+- [x] Day 15：第一次调用大模型 API
+- [ ] Day 16：大模型请求与 Prompt 基础
 
 ## 11. 未来目标
 
@@ -439,3 +440,41 @@ Day 14 预期测试结果：
 ### 下一阶段
 
 Day 15 开始学习大模型 API 调用。
+
+## Day 15：大模型 API 基础
+
+新增模块：
+
+- app/llm.py：封装模型请求
+- llm_day15.py：模型调用示例
+- tests/test_llm.py：离线模型调用测试
+
+### 开发依赖
+
+python -m pip install -r requirements-dev.txt
+
+### 配置 API Key
+
+复制 .env.example 为 .env，并设置：
+
+OPENAI_API_KEY=自己的APIKey
+OPENAI_MODEL=gpt-5.4-mini
+
+不要将真实密钥提交到 Git。
+
+### 调用大模型
+
+python llm_day15.py
+
+### 自动化测试
+
+python -m pytest -q tests/
+
+Day 15 预期：80 passed
+
+### 说明
+
+- 当前通过 OpenAI Responses API 调用模型
+- 自动化测试使用 Mock，不依赖真实 API
+- 真实模型调用可能产生额外费用
+- 尚未实现对话上下文、流式输出和 Function Calling
