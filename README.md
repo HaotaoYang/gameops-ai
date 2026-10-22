@@ -163,7 +163,8 @@ services.py 中的主要函数：
 - [x] Day 13：分页
 - [x] Day 14：第二周 FastAPI 阶段验收
 - [x] Day 15：第一次调用大模型 API
-- [ ] Day 16：大模型请求与 Prompt 基础
+- [x] Day 16：Prompt 基础与请求控制
+- [ ] Day 17：大模型上下文与消息组织
 
 ## 11. 未来目标
 
@@ -478,3 +479,41 @@ Day 15 预期：80 passed
 - 自动化测试使用 Mock，不依赖真实 API
 - 真实模型调用可能产生额外费用
 - 尚未实现对话上下文、流式输出和 Function Calling
+
+## Day 16：Prompt 基础与模型请求控制
+
+### 新增模块
+
+- app/prompts.py：游戏运营分析提示词及输入模板
+- prompt_day16.py：结合现有业务数据调用模型
+- tests/test_prompts.py：Prompt 和请求控制离线测试
+
+### 核心设计
+
+1. instructions 描述应用行为规则
+2. input 提供本次问题和业务数据
+3. 统计数据由 services.py 生成
+4. 数据不合理时先由 Python 抛出异常
+5. 缺少证据时要求模型说明数据不足
+6. Prompt 约束不替代程序校验和权限控制
+
+### 运行演示
+
+python prompt_day16.py
+
+注意：执行演示会调用真实大模型 API，可能产生费用。
+
+### 自动化测试
+
+python -m pytest -q tests/test_prompts.py
+
+python -m pytest -q tests/
+
+Day 16 预期：86 passed
+
+### 当前限制
+
+- 尚未实现结构化输出
+- 尚未实现模型质量评测
+- 尚未实现自动 Function Calling
+- 尚未实现 RAG
