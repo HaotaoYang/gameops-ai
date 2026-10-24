@@ -162,9 +162,10 @@ services.py 中的主要函数：
 - [x] Day 12：日期与组合筛选
 - [x] Day 13：分页
 - [x] Day 14：第二周 FastAPI 阶段验收
-- [x] Day 15：第一次调用大模型 API
-- [x] Day 16：Prompt 基础与请求控制
-- [ ] Day 17：大模型上下文与消息组织
+- [x] Day 15：首次调用大模型 API
+- [x] Day 16：Prompt 基础与模型请求控制
+- [x] Day 17：上下文与多轮消息组织
+- [ ] Day 18：下一阶段内容，待开始
 
 ## 11. 未来目标
 
@@ -517,3 +518,39 @@ Day 16 预期：86 passed
 - 尚未实现模型质量评测
 - 尚未实现自动 Function Calling
 - 尚未实现 RAG
+
+## Day 17：大模型上下文与消息组织
+
+新增文件：
+
+- app/conversation.py：多轮对话状态管理
+- conversation_day17.py：两轮真实对话演示
+- tests/test_conversation.py：离线上下文测试
+
+核心功能：
+
+- 使用 role/content 组织消息
+- 将历史消息与最新问题一起提交 Responses API
+- 独立保存每个 ChatSession 的对话
+- 仅在模型请求成功后保存一轮历史
+- 支持查看和清空消息历史
+
+运行演示：
+
+python conversation_day17.py
+
+注意：演示会执行两次真实 API 调用，可能产生费用。
+
+运行测试：
+
+python -m pytest -q tests/test_conversation.py
+python -m pytest -q tests/
+
+Day 17 预期：92 passed
+
+限制：
+
+- 历史只保存在当前 Python 进程内存
+- 未做上下文截断或 Token 预算
+- 尚未实现数据库或 Redis 持久化
+- 不支持多用户并发会话管理
