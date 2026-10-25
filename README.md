@@ -554,3 +554,37 @@ Day 17 预期：92 passed
 - 未做上下文截断或 Token 预算
 - 尚未实现数据库或 Redis 持久化
 - 不支持多用户并发会话管理
+
+## Day 18：结构化输出与 Pydantic
+
+新增文件：
+
+- app/report_schemas.py：结构化游戏运营报告模型
+- app/structured_llm.py：Responses API 结构化调用
+- structured_day18.py：真实结构化报告演示
+- tests/test_structured_llm.py：离线测试
+
+核心知识：
+
+- JSON 是数据格式
+- Pydantic 负责模型验证
+- Responses API 的 parse() 支持结构化输出
+- output_parsed 可以直接获取解析后的模型对象
+- 结构正确不等于业务事实正确
+
+真实演示：
+
+python structured_day18.py
+
+离线测试：
+
+python -m pytest -q tests/test_structured_llm.py
+
+完整回归目标：98 passed
+
+当前限制：
+
+- 尚未实现完整的模型输出质量评测
+- 尚未实现流式输出
+- 尚未将结构化报告接入 FastAPI
+- 尚未实现 Function Calling

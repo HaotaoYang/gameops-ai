@@ -3,7 +3,7 @@ import os
 from openai import OpenAI
 
 
-DEFAULT_MODEL = "gpt-5.4-mini"
+DEFAULT_MODEL = "gpt-6.1-sol"
 
 DEFAULT_INSTRUCTIONS = (
     "你是一名游戏运营分析助手。"
