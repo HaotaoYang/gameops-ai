@@ -22,6 +22,17 @@ GAMEOPS_ANALYSIS_INSTRUCTIONS = """
 请使用中文，尽量简洁。
 """.strip()
 
+GAMEOPS_ANALYSIS_INSTRUCTIONS += """
+
+字段语义（必须遵守）：
+1. min_level是高等级筛选阈值，不是全体玩家的最低等级。
+2. high_level_players是等级大于等于min_level的人数。
+3. 当total_players大于high_level_players时，
+   不能声称所有玩家都达到了高等级筛选阈值。
+4. 已提供min_level时，不能说缺少高等级判定标准。
+5. 不能依据这几个统计字段推断全体玩家的最低等级。
+6. 不得编造留存率、DAU、充值金额或流失原因。
+""".strip()
 
 def build_player_analysis_prompt(
     server_id: int,
@@ -54,7 +65,11 @@ def build_player_analysis_prompt(
         f"server_id: {server_id}\n"
         f"total_players: {total_players}\n"
         f"min_level: {min_level}\n"
+        f"min_level_definition: 高等级筛选阈值，"
+        "不是所有玩家的最低等级\n"
         f"high_level_players: {high_level_players}\n"
+        f"high_level_players_definition: "
+        "等级大于等于min_level的玩家人数\n"
         "【业务数据结束】\n\n"
         "请仅根据上述信息完成分析。"
     )

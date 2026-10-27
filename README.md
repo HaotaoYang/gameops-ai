@@ -588,3 +588,38 @@ python -m pytest -q tests/test_structured_llm.py
 - 尚未实现流式输出
 - 尚未将结构化报告接入 FastAPI
 - 尚未实现 Function Calling
+
+## Day 19：Streaming 流式输出
+
+新增：
+
+- app/streaming_llm.py
+- streaming_day19.py
+- tests/test_streaming_llm.py
+
+核心能力：
+
+- 使用 Responses API 的 stream=True
+- 处理 response.output_text.delta
+- 通过 Python yield 逐段返回文本
+- 处理 completed、failed、incomplete 等事件
+- 正确关闭流式连接
+- 拼接文本片段生成完整回答
+
+真实演示：
+
+python streaming_day19.py
+
+离线测试：
+
+python -m pytest -q tests/test_streaming_llm.py
+
+完整回归目标：106 passed
+
+当前限制：
+
+- 尚未接入 FastAPI StreamingResponse
+- 尚未实现多轮对话流式输出
+- 尚未实现实时 Token 用量展示
+- 尚未实现断线恢复和自动重试
+- 流式文本不等于经过业务校验的正式报告
