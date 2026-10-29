@@ -623,3 +623,53 @@ python -m pytest -q tests/test_streaming_llm.py
 - 尚未实现实时 Token 用量展示
 - 尚未实现断线恢复和自动重试
 - 流式文本不等于经过业务校验的正式报告
+
+## Day 21：第三周 AI 应用综合复习与验收
+
+### 已完成能力
+
+- Day 15：Responses API 普通调用
+- Day 16：Prompt 与 instructions
+- Day 17：多轮上下文管理
+- Day 18：Pydantic 结构化输出
+- Day 19：Streaming 流式响应
+- Day 20：模型业务语义评测
+- Day 21：跨模块综合回归测试
+
+### 新增测试
+
+tests/test_week3_review.py
+
+共8项综合测试，覆盖：
+
+1. 业务统计正确性
+2. Prompt字段语义
+3. 普通模型调用契约
+4. 多轮会话上下文
+5. Pydantic结构化输出
+6. Streaming事件处理
+7. 历史业务错误评测
+8. 业务数据到模型评测的完整离线流程
+
+### 运行测试
+
+python -m pytest -q tests/test_week3_review.py
+python -m pytest -q tests/
+
+Day 21 完整回归目标：122 passed
+
+### 阶段总结
+
+现有gameops-ai已经具备基础AI应用后端能力。
+
+当前仍然是教学项目，尚未完成：
+
+- 模型自主选择业务工具
+- Function Calling执行循环
+- RAG与向量数据库
+- 会话持久化
+- 多用户并发状态管理
+- 生产环境鉴权与权限管理
+- 完整模型质量评测体系
+
+下一阶段将学习Function Calling和Agent工具调用。
