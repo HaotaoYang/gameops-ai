@@ -1,10 +1,12 @@
 from dotenv import load_dotenv
 
-from app.my_llm import get_answer
+from app.my_llm import MyChatSession
 
 
 def main() -> None:
     load_dotenv()
+
+    session = MyChatSession()
 
     while True:
         try:
@@ -22,7 +24,7 @@ def main() -> None:
             continue
 
         try:
-            answer = get_answer(question)
+            answer = session.ask(question)
         except Exception as exc:
             print(f"请求失败：{exc}")
             continue
