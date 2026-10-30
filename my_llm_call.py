@@ -23,12 +23,9 @@ def main() -> None:
             print("问题不能为空，请重新输入。")
             continue
 
-        chunks: list[str] = []
-
         try:
             for chunk in session.ask(question):
                 print(chunk, end="", flush=True)
-                chunks.append(chunk)
             print()
         except Exception as exc:
             print("\n\n模型输出失败，以上内容可能不完整。")

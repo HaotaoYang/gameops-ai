@@ -60,7 +60,6 @@ class MyChatSession:
         )
 
         completed = False
-        received_text = False
 
         reply_text = ""
 
@@ -72,7 +71,6 @@ class MyChatSession:
                     delta = event.delta
 
                     if delta:
-                        received_text = True
                         reply_text += delta
                         yield delta
 
