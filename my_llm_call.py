@@ -23,14 +23,18 @@ def main() -> None:
             print("问题不能为空，请重新输入。")
             continue
 
+        chunks: list[str] = []
+
         try:
-            answer = session.ask(question)
+            for chunk in session.ask(question):
+                print(chunk, end="", flush=True)
+                chunks.append(chunk)
+            print()
         except Exception as exc:
-            print(f"请求失败：{exc}")
+            print("\n\n模型输出失败，以上内容可能不完整。")
+            print("错误类型：", type(exc).__name__)
+            print("错误信息：", str(exc))
             continue
-
-        print("回答：", answer)
-
 
 if __name__ == "__main__":
     main()
