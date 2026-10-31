@@ -673,3 +673,41 @@ Day 21 完整回归目标：122 passed
 - 完整模型质量评测体系
 
 下一阶段将学习Function Calling和Agent工具调用。
+
+## Day 22：Function Calling 基础
+
+新增：
+
+- app/tools.py：工具 Schema、参数验证和只读业务执行
+- app/agent.py：Responses API 工具调用闭环
+- agent_day22.py：真实 API 演示
+- tests/test_agent.py：8项离线测试
+
+核心能力：
+
+1. 定义 Function Calling JSON Schema
+2. 使用 strict=True 约束工具参数结构
+3. 获取模型返回的 function_call
+4. 后端通过 Pydantic 验证参数
+5. 通过白名单执行现有 services.py 函数
+6. 使用 call_id 返回 function_call_output
+7. 第二次模型请求生成最终回答
+
+真实演示：
+
+python agent_day22.py
+
+测试：
+
+python -m pytest -q tests/test_agent.py
+python -m pytest -q tests/
+
+Day 22 完整回归目标：130 passed
+
+当前限制：
+
+- 只支持一个只读工具
+- 每次最多执行一个工具调用
+- 没有循环式多工具规划
+- 尚未支持写操作审批
+- 尚未实现真实数据权限系统
