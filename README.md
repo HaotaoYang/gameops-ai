@@ -711,3 +711,47 @@ Day 22 完整回归目标：130 passed
 - 没有循环式多工具规划
 - 尚未支持写操作审批
 - 尚未实现真实数据权限系统
+
+## Day 23：多工具选择与连续Function Calling
+
+### 新增文件
+
+- app/multi_tools.py
+- app/multi_agent.py
+- multi_agent_day23.py
+- tests/test_multi_agent.py
+
+### 新增能力
+
+1. 注册三个只读玩家业务工具
+2. 基于工具名称路由到对应services函数
+3. 使用Pydantic校验各工具参数
+4. 支持模型连续调用不同工具
+5. 使用call_id关联工具调用及执行结果
+6. 限制最大工具调用轮数
+7. 拒绝未知工具和非法参数
+8. 支持工具执行成功后的回调通知
+
+### 运行真实演示
+
+python multi_agent_day23.py
+
+注意：会调用真实模型API，可能产生费用。
+
+### 自动化测试
+
+python -m pytest -q tests/test_multi_agent.py
+
+python -m pytest -q tests/
+
+Day 23 完整回归目标：140 passed
+
+### 当前限制
+
+- 一轮模型响应只处理一个工具调用
+- 仅支持教学模拟数据的只读查询
+- 不支持真实用户权限与访问控制
+- 不支持并行工具执行
+- 不支持工具执行超时和自动重试
+- 暂无工具选择质量评测
+- 尚不是生产级Agent
