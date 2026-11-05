@@ -755,3 +755,46 @@ Day 23 完整回归目标：140 passed
 - 不支持工具执行超时和自动重试
 - 暂无工具选择质量评测
 - 尚不是生产级Agent
+
+## Day 24：Agent工具异常处理与可靠性
+
+### 新增文件
+
+- app/tool_results.py
+- app/reliable_agent.py
+- reliable_agent_day24.py
+- tests/test_reliable_agent.py
+
+### 新增能力
+
+1. 使用统一JSON协议表示工具执行成功和失败
+2. 将非法参数转成受控错误
+3. 工具内部异常不直接暴露给模型
+4. 允许模型根据参数错误重新选择参数
+5. 使用工具名和标准化参数识别重复调用
+6. 拒绝未知工具
+7. 限制最大工具调用次数
+8. 保留Day23的连续多工具查询能力
+
+### 演示
+
+python reliable_agent_day24.py
+
+该演示会调用真实大模型API，可能产生费用。
+
+### 测试
+
+python -m pytest -q tests/test_reliable_agent.py
+python -m pytest -q tests/
+
+Day24预期：150 passed
+
+### 当前限制
+
+- 仅支持教学模拟数据的只读工具
+- 未实现网络请求自动重试
+- 未实现工具调用超时
+- 未实现跨请求幂等
+- 未实现完整的结构化日志和监控
+- 未实现用户权限控制
+- 最终模型回答尚未接受严格业务事实验证
