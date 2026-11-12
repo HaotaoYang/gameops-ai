@@ -74,7 +74,7 @@ def search_chunks(
         score = len(matched)
 
         # Never return an unrelated zero-score chunk.
-        if score == 0:
+        if score < 2:
             continue
 
         hits.append(
