@@ -798,3 +798,47 @@ Day24预期：150 passed
 - 未实现完整的结构化日志和监控
 - 未实现用户权限控制
 - 最终模型回答尚未接受严格业务事实验证
+
+## Day 29：RAG基础与本地知识库检索
+
+### 新增功能
+
+1. 创建游戏运营Markdown知识库
+2. 使用Document表示原始文档
+3. 使用Chunk表示可检索的文本片段
+4. 实现固定字符数与重叠窗口切分
+5. 实现中文双字片段关键词检索
+6. 根据匹配分数进行Top-K排序
+7. 为检索结果保留来源与片段ID
+8. 对没有关键词匹配的问题返回空结果
+
+### 新增文件
+
+- app/rag/__init__.py
+- app/rag/documents.py
+- app/rag/retriever.py
+- data/knowledge/活动规则.md
+- data/knowledge/账号安全.md
+- data/knowledge/客服指南.md
+- rag_day29.py
+- tests/test_rag_day29.py
+
+### 运行演示
+
+python rag_day29.py
+
+### 自动化测试
+
+python -m pytest -q tests/test_rag_day29.py
+python -m pytest -q tests/
+
+Day29完整回归目标：200 passed
+
+### 当前限制
+
+- 尚未接入大模型进行生成
+- 未使用Embedding
+- 未使用向量数据库
+- 关键词检索无法准确理解复杂语义
+- 字符窗口切分不保留完整Markdown结构
+- 未实现知识库版本、访问权限与数据更新机制
