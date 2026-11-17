@@ -1,0 +1,68 @@
+[
+  {
+    "id": "Q01",
+    "question": "50级玩家可以参加什么活动？",
+    "expected_sources": ["活动规则.md"],
+    "expected_headings": ["周末挑战活动"],
+    "expected_status": "answered",
+    "required_terms": ["周末挑战活动"],
+    "forbidden_terms": ["不能参加周末挑战活动"],
+    "sample_answer": "50级玩家可以参加周末挑战活动。[资料1]",
+    "sample_origin": "day31_real"
+  },
+  {
+    "id": "Q02",
+    "question": "玩家忘记账号后应该怎么办？",
+    "expected_sources": ["客服指南.md"],
+    "expected_headings": ["账号找回"],
+    "expected_status": "answered",
+    "required_terms": ["客服", "账号找回", "身份验证"],
+    "forbidden_terms": ["无需身份验证", "不需要身份验证"],
+    "sample_answer": "玩家忘记账号后，可以通过客服渠道申请账号找回，并按照客服要求完成身份验证。[资料1]",
+    "sample_origin": "day31_real"
+  },
+  {
+    "id": "Q03",
+    "question": "周末挑战活动的报名时间是什么时候？",
+    "expected_sources": ["活动规则.md"],
+    "expected_headings": ["周末挑战活动"],
+    "expected_status": "answered",
+    "required_terms": ["周五", "18:00", "周日", "22:00"],
+    "forbidden_terms": [],
+    "sample_answer": "报名时间为每周五18:00至周日22:00。[资料1]",
+    "sample_origin": "synthetic"
+  },
+  {
+    "id": "Q04",
+    "question": "游戏账号的密码保护有哪些要求？",
+    "expected_sources": ["账号安全.md"],
+    "expected_headings": ["密码保护"],
+    "expected_status": "answered",
+    "required_terms": ["独立", "密码", "不要"],
+    "forbidden_terms": ["可以告诉其他人"],
+    "sample_answer": "玩家应使用独立且强度足够的密码，不要将游戏账号密码告诉其他人。[资料1]",
+    "sample_origin": "synthetic"
+  },
+  {
+    "id": "Q05",
+    "question": "火星基地的具体坐标是多少？",
+    "expected_sources": [],
+    "expected_headings": [],
+    "expected_status": "insufficient_evidence",
+    "required_terms": [],
+    "forbidden_terms": [],
+    "sample_answer": "当前知识库资料不足，无法依据知识库回答该问题。",
+    "sample_origin": "day31_real"
+  },
+  {
+    "id": "Q06",
+    "question": "周末挑战活动是哪一年首次上线的？",
+    "expected_sources": ["活动规则.md"],
+    "expected_headings": ["周末挑战活动"],
+    "expected_status": "insufficient_evidence",
+    "required_terms": [],
+    "forbidden_terms": [],
+    "sample_answer": "当前知识库资料不足，无法依据知识库回答该问题。",
+    "sample_origin": "day31_real"
+  }
+]
